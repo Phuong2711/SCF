@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="scf_account_move_view_tree" model="ir.ui.view">
+            <field name="name">SCF Account Move</field>
+            <field name="model">scf.account.move</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="amount"/>
+                    <field name="state" decoration-info="state == 'draft'" decoration-warning="state == 'wait_confirm'" decoration-success="state == 'confirmed'" decoration-danger="state == 'reject'" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="scf_account_move_view_form" model="ir.ui.view">
+            <field name="name">SCF Account Move</field>
+            <field name="model">scf.account.move</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_send_request" string="Request approval" type="object" class="btn-primary" states="draft" groups="shrimp_crab_fish.group_scf_player,shrimp_crab_fish.group_scf_manager"/>
+                        <button name="action_confirm" string="Approve" type="object" class="btn-primary" states="wait_confirm" groups="shrimp_crab_fish.group_scf_manager"/>
+                        <button name="action_reject" string="Reject" type="object" class="btn-secondary" states="wait_confirm" groups="shrimp_crab_fish.group_scf_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,wait_confirm,confirmed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="user_id"/>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="image" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="scf_account_move_action" model="ir.actions.act_window">
+            <field name="name">SCF Account Move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scf.account.move</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

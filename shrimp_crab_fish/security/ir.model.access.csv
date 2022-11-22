@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_scf_accont_move_player,access_scf_accont_move_player,model_scf_account_move,shrimp_crab_fish.group_scf_player,1,1,1,0
+access_scf_accont_move_manager,access_scf_accont_move_manager,model_scf_account_move,shrimp_crab_fish.group_scf_manager,1,1,1,1

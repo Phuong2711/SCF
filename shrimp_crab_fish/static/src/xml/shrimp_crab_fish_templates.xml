@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="shrimp_crab_fish.SCFDashboard" owl="1">
+        <div class="scf-app">
+            <div class="user-infor">
+                <span t-ref="name"></span><br/>
+                Balance: <span t-ref="balance"></span>
+            </div>
+            <div class="marquee-banner">
+                <marquee width="100%" direction="left" height="100px">
+                    ERP88 Nha Cai Den Tu Viet Nam.
+                </marquee>
+            </div>
+            <div class="scf-alert">
+                <span>Shrimp Crab Fish</span>
+            </div>
+            <div class="plate">
+                <img t-attf-src="/shrimp_crab_fish/static/src/image/plate.png" style="border:none;"/>
+                <img id="result-1" t-attf-src="/shrimp_crab_fish/static/src/image/result_deer.png"/>
+                <img id="result-2" t-attf-src="/shrimp_crab_fish/static/src/image/result_gourd.png"/>
+                <img id="result-3" t-attf-src="/shrimp_crab_fish/static/src/image/result_rooster.png"/>
+            </div>
+            <div class="random">
+            </div>
+            <div class="scf-table">
+                <table>
+                    <tr>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/deer.png" t-on-click="_onClickDeer"/><input id="deer" type="number" t-ref="deer-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/gourd.png" t-on-click="_onClickGourd"/><input id="gourd" type="number" t-ref="gourd-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/rooster.png" t-on-click="_onClickRooster"/><input id="rooster" type="number" t-ref="rooster-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                    </tr>
+                    <tr>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/fish.png" t-on-click="_onClickFish"/><input id="fish" type="number" t-ref="fish-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/crab.png" t-on-click="_onClickCrab"/><input id="crab" type="number" t-ref="crab-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/shrimp.png" t-on-click="_onClickShrimp"/><input id="shrimp" type="number" t-ref="shrimp-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="scf-bet-button">
+                <button class="bet-button">Bet</button>
+                <button class="cancel-button" t-on-click="_onClickCancel">Cancel</button>
+            </div>
+        </div>
+    </t>
+</templates>
