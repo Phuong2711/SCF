@@ -71,15 +71,38 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
 
         _onClickBet() {
-            var child = document.querySelectorAll('.plate > img')
-            for (let i = 0; i < child.length; i++) {
-                document.querySelector('.plate').removeChild(child[i])
-            }
-            for (let i = 0; i < 3; i++) {
+           const imgSrc = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
+           [1, 2, 3].forEach(item =>{
+               let result = Math.floor(Math.random() * 6);
+               document.getElementById(`result-${item}`).src = `/shrimp_crab_fish/static/src/image/result_${imgSrc[result]}.png`;
+           });
+           let bowRef = document.getElementById("bow");
+           bowRef.classList.remove("bow-animation");
+           bowRef.style.left = "0px";
+           bowRef.style.top = "0px";
+           void bowRef.offsetWidth;
+           bowRef.classList.add("bow-animation");
 
-                get_random()
-            }
+           // Disable button on 5 seconds to reduce double click
+            let betRef = document.getElementsByClassName("bet-button");
+            betRef.attr('')
+
         }
+
+        _onClickBow(){
+            let change = 0;
+            const imgBow = document.getElementById("bow");
+            const id = setInterval(openBow, 20);
+            function openBow(){
+                if(change > 125){
+                    clearInterval(id);
+                } else {
+                    change += 1;
+                    imgBow.style.left = change + "px";
+                    imgBow.style.top = -change + "px";
+                }
+            }
+            }
 
 
     }
