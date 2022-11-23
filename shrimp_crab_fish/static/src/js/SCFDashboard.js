@@ -65,7 +65,13 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
         _onClickCancel() {
             const betInput = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
             betInput.forEach(item => { document.getElementById(item).value = 0; });
-            onMounted()
+            let cancelRef = document.getElementById("cancel-button");
+            cancelRef.innerHTML = "Canceling...";
+            cancelRef.disabled = true;
+            setTimeout(()=>{
+               cancelRef.disabled = false;
+               cancelRef.innerHTML = "Cancel";
+            }, 1000);
         }
 
 
@@ -82,10 +88,14 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
            bowRef.style.top = "0px";
            void bowRef.offsetWidth;
            bowRef.classList.add("bow-animation");
-
-           // Disable button on 5 seconds to reduce double click
-            let betRef = document.getElementsByClassName("bet-button");
-            betRef.attr('')
+           //Disable button 5 second after click
+            let betRef = document.getElementById("bet-button");
+            betRef.innerHTML = "Betting...";
+            betRef.disabled = true;
+            setTimeout(()=>{
+               betRef.disabled = false;
+               betRef.innerHTML = "Bet";
+            }, 2000);
 
         }
 

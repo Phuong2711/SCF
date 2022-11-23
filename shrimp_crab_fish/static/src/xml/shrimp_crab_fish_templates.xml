@@ -39,8 +39,8 @@
                 </table>
             </div>
             <div class="scf-bet-button">
-                <button class="bet-button"  t-on-click="_onClickBet">Bet</button>
-                <button class="cancel-button" t-on-click="_onClickCancel">Cancel</button>
+                <button id="bet-button" class="bet-button"  t-on-click="_onClickBet">Bet</button>
+                <button id="cancel-button" class="cancel-button" t-on-click="_onClickCancel">Cancel</button>
             </div>
         </div>
     </t>
