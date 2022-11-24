@@ -136,6 +136,9 @@
   position:relative;
   cursor: grabbing;
 }
+.no-pointer-event{
+  pointer-events:none;
+}
 
 .bow-animation{
   animation: shaking 0.15s 10;

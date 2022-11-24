@@ -3,8 +3,8 @@
     <t t-name="shrimp_crab_fish.SCFDashboard" owl="1">
         <div class="scf-app">
             <div class="user-infor">
-                <span t-ref="name"></span><br/>
-                Balance: <span t-ref="balance"></span>
+                <span id="employee_name" t-ref="name"></span><br/>
+                Balance: <span id="employee_balance" t-ref="balance"></span>
             </div>
             <div class="marquee-banner">
                 <marquee width="100%" direction="left" height="100px">
@@ -13,6 +13,9 @@
             </div>
             <div class="scf-alert">
                 <span>Shrimp Crab Fish</span>
+            </div>
+            <div class="scf-countdown">
+                <span id="countdown"></span>
             </div>
             <div class="plate">
                 <img id="result-1" t-attf-src="/shrimp_crab_fish/static/src/image/result_deer.png"/>

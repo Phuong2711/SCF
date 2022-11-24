@@ -13,6 +13,9 @@
             <menuitem id="shrimp_crab_fish.shrimp_crab_fish_deposit_withdraw_category" name="Balance">
                 <menuitem id="shrimp_crab_fish.shrimp_crab_fish_account_move_menuitem" name="Account Move" action="scf_account_move_action"/>
             </menuitem>
+            <menuitem id="shrimp_crab_fish.shrimp_crab_fish_configuration_category" name="Configuration">
+                <menuitem id="shrimp_crab_fish.shrimp_crab_fish_scf_table_menuitem" name="SCF Table" action="scf_table_action"/>
+            </menuitem>
         </menuitem>
 
     </data>

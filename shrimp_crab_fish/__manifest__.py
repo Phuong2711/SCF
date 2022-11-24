@@ -21,10 +21,12 @@
 
     },
     'data': [
+        'data/scf_table_data.xml',
         'security/scf_security.xml',
         'security/ir.model.access.csv',
         'view/res_users_view.xml',
         'view/scf_account_move_view.xml',
+        'view/scf_table_view.xml',
         'view/menu.xml',
     ],
     'license': 'LGPL-3',

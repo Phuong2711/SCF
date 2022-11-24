@@ -1,40 +1,31 @@
 odoo.define('shrimp_crab_fish.dashboard', function (require) {
     "use strict";
     const { Component } = owl;
-    const { useRef, onMounted } = owl.hooks;
+    const { useRef, onMounted, onWillUnmount } = owl.hooks;
     var core = require('web.core');
     var rpc = require('web.rpc');
-
-    function get_random() {
-        var image = document.querySelectorAll('td > img')
-        var b = []
-        b.splice(0, b.length)
-        for (let i = 0; i < image.length; i++) {
-            b.push(image[i])
-        }
-        // alert(b[Math.floor((Math.random()*b.length))])
-        var p = document.createElement("img");
-
-        p.src = b[Math.floor((Math.random() * b.length))].src
-        document.querySelector('.plate').appendChild(p)
-
-    }
 
     class SCFDashboard extends Component {
         static template = "shrimp_crab_fish.SCFDashboard";
 
+
         setup() {
-            const nameRef = useRef("name");
-            const balanceRef = useRef("balance");
             onMounted(() => {
-                rpc.query({
-                    model: 'res.users',
-                    method: 'retrive_user_data',
-                }).then(res => {
-                    nameRef.el.outerText = res['name'];
-                    balanceRef.el.outerText = res['balance'];
-                });
-            })
+                this.balanceRefreshInterval = setInterval(_refreshBalance, 2000);
+                function _refreshBalance(){
+                    return rpc.query({
+                        model: 'res.users',
+                        method: 'retrive_user_data',
+                    }).then(result =>{
+                        document.getElementById("employee_name").innerHTML = result['name'];
+                        document.getElementById("employee_balance").innerHTML = result['balance'];
+
+                    });
+                }
+            });
+            onWillUnmount(()=>{
+                clearInterval(this.balanceRefreshInterval);
+            });
         }
 
         _onClickDeer() {
@@ -83,17 +74,22 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                document.getElementById(`result-${item}`).src = `/shrimp_crab_fish/static/src/image/result_${imgSrc[result]}.png`;
            });
            let bowRef = document.getElementById("bow");
+           let betRef = document.getElementById("bet-button");
+           // Remove clickable bow for 2 seconds
            bowRef.classList.remove("bow-animation");
+           bowRef.classList.add("no-pointer-event");
            bowRef.style.left = "0px";
            bowRef.style.top = "0px";
+           // Restart animation
            void bowRef.offsetWidth;
            bowRef.classList.add("bow-animation");
-           //Disable button 5 second after click
-            let betRef = document.getElementById("bet-button");
+           //Disable button 2 second after click
+
             betRef.innerHTML = "Betting...";
-            betRef.disabled = true;
+            betRef.classList.add("no-pointer-event");
             setTimeout(()=>{
-               betRef.disabled = false;
+               betRef.classList.remove("no-pointer-event");
+               bowRef.classList.remove("no-pointer-event");
                betRef.innerHTML = "Bet";
             }, 2000);
 
@@ -102,9 +98,14 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
         _onClickBow(){
             let change = 0;
             const imgBow = document.getElementById("bow");
+            const betRef = document.getElementById("bet-button");
+            imgBow.classList.add("no-pointer-event");
+            betRef.classList.add("no-pointer-event");
             const id = setInterval(openBow, 20);
             function openBow(){
                 if(change > 125){
+                    imgBow.classList.remove("no-pointer-event");
+                    betRef.classList.remove("no-pointer-event");
                     clearInterval(id);
                 } else {
                     change += 1;

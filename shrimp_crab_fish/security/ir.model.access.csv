@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_scf_accont_move_player,access_scf_accont_move_player,model_scf_account_move,shrimp_crab_fish.group_scf_player,1,1,1,0
 access_scf_accont_move_manager,access_scf_accont_move_manager,model_scf_account_move,shrimp_crab_fish.group_scf_manager,1,1,1,1
+access_scf_table_player,access_scf_table_player,model_scf_table,shrimp_crab_fish.group_scf_player,1,0,0,0
+access_scf_table_manager,access_scf_table_manager,model_scf_table,shrimp_crab_fish.group_scf_manager,1,1,0,0
+access_scf_bet_line_player,access_scf_bet_line_player,model_scf_bet_line,shrimp_crab_fish.group_scf_player,1,0,1,0
+access_scf_bet_line_manager,access_scf_bet_line_manager,model_scf_bet_line,shrimp_crab_fish.group_scf_manager,1,1,1,1

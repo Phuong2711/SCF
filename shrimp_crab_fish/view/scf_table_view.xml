@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="scf_table_view_tree" model="ir.ui.view">
+            <field name="name">SCF Table View Tree</field>
+            <field name="model">scf.table</field>
+            <field name="arch" type="xml">
+                <tree string="scf_table_tree">
+                    <field name="name"/>
+                    <field name="time_per_round"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="scf_table_view_form" model="ir.ui.view">
+            <field name="name">SCF Table View Form</field>
+            <field name="model">scf.table</field>
+            <field name="arch" type="xml">
+                <form string="scf_table_form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="time_per_round"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="scf_table_action" model="ir.actions.act_window">
+            <field name="name">Shrimp Crab Fish Table</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scf.table</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>
