@@ -10,7 +10,7 @@
   border-style: groove;
 }
 
-.scf-app input {
+.scf-app scf-table input {
   border-radius: 25px;
   border: 2px solid #5C6576;
   height: 15px;
@@ -72,7 +72,6 @@
 
 .scf-alert {
   text-align: center;
-  margin-top: 50px;
 }
 
 .scf-alert span {
@@ -188,4 +187,16 @@
   cursor: pointer;
   margin: 0 20px;
   opacity: 0.7;
+}
+
+.scf-countdown{
+  text-align:center;
+}
+
+#countdown{
+  background: lightblue;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  text-align: center;
 }

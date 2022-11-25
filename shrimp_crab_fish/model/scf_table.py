@@ -12,24 +12,26 @@ class ScfTable(models.Model):
     time_per_round = fields.Integer('Time per round')
     current_time = fields.Integer('Current time')
     scf_bet_line_ids = fields.One2many('scf.bet.line', 'scf_table_id')
-    state = fields.Selection([('bet', 'Betting'), ('nobet', 'No more bet')])
+    state = fields.Selection([('open', 'Open'), ('close', 'Close')])
 
     @api.model
     def _countdown(self):
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
         rec.current_time = rec.time_per_round
-        while rec.current_time > 0 :
+        self._cr.commit()
+        while rec.current_time > -1 :
             time.sleep(1)
             rec.current_time = rec.current_time - 1
-            print(self.env.ref("shrimp_crab_fish.scf_table_1").current_time)
-        rec.state = 'nobet'
-        print(rec.state)
+            self._cr.commit()
+        rec.state = 'close'
 
     @api.model
     def refresh_table_data(self):
         res = {}
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
         res['current_time'] = rec.current_time
+        if rec.current_time == -1:
+            res['current_time'] = "Stop"
         return res
 
     @api.model

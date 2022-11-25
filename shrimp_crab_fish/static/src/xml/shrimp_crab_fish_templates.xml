@@ -15,7 +15,8 @@
                 <span>Shrimp Crab Fish</span>
             </div>
             <div class="scf-countdown">
-                <span id="countdown"></span>
+                <input id="access" type="hidden"/>
+                <input id="countdown" class="no-pointer-event" onChange="_onchangeCountDown()" value="Stop"/>
             </div>
             <div class="plate">
                 <img id="result-1" t-attf-src="/shrimp_crab_fish/static/src/image/result_deer.png"/>
@@ -30,14 +31,14 @@
             <div class="scf-table">
                 <table>
                     <tr>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/deer.png" t-on-click="_onClickDeer"/><input id="deer" type="number" t-ref="deer-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/gourd.png" t-on-click="_onClickGourd"/><input id="gourd" type="number" t-ref="gourd-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/rooster.png" t-on-click="_onClickRooster"/><input id="rooster" type="number" t-ref="rooster-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/deer.png" t-on-click="_onClickDeer"/><input id="deer" class="no-pointer-event" type="number" t-ref="deer-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/gourd.png" t-on-click="_onClickGourd"/><input id="gourd" class="no-pointer-event" type="number" t-ref="gourd-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/rooster.png" t-on-click="_onClickRooster"/><input id="rooster" class="no-pointer-event" type="number" t-ref="rooster-bet" value="0"/></td>
                     </tr>
                     <tr>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/fish.png" t-on-click="_onClickFish"/><input id="fish" type="number" t-ref="fish-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/crab.png" t-on-click="_onClickCrab"/><input id="crab" type="number" t-ref="crab-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/shrimp.png" t-on-click="_onClickShrimp"/><input id="shrimp" type="number" t-ref="shrimp-bet" oninput="this.value = Math.abs(this.value)" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/fish.png" t-on-click="_onClickFish"/><input id="fish" class="no-pointer-event" type="number" t-ref="fish-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/crab.png" t-on-click="_onClickCrab"/><input id="crab" class="no-pointer-event" type="number" t-ref="crab-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/shrimp.png" t-on-click="_onClickShrimp"/><input id="shrimp" class="no-pointer-event" type="number" t-ref="shrimp-bet" value="0"/></td>
                     </tr>
                 </table>
             </div>

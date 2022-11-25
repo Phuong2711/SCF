@@ -11,7 +11,13 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
         setup() {
             onMounted(() => {
+                 rpc.query({
+                    model: 'res.users',
+                    method: 'check_access_right'}).then(result=>{
+                        document.getElementById("access").value = result;
+                 });
                 this.balanceRefreshInterval = setInterval(_refreshBalance, 2000);
+                this.countDownRefreshInterval = setInterval(_refreshCountDown, 1000);
                 function _refreshBalance(){
                     return rpc.query({
                         model: 'res.users',
@@ -22,9 +28,20 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
                     });
                 }
+                function _refreshCountDown(){
+                    return rpc.query({
+                        model: 'scf.table',
+                        method: 'refresh_table_data',
+                    }).then(result =>{
+                        let countDownRef = document.getElementById("countdown");
+                        countDownRef.value = result["current_time"];
+                        countDownRef.dispatchEvent(new Event('input', { bubbles: true }));
+                    });
+                }
             });
             onWillUnmount(()=>{
                 clearInterval(this.balanceRefreshInterval);
+                clearInterval(this.countDownRefreshInterval);
             });
         }
 
@@ -114,7 +131,9 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                 }
             }
             }
-
+         _onchangeCountDown(){
+            console.log(document.getElementById("countdown").value);
+         }
 
     }
 
