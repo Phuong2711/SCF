@@ -1,9 +1,10 @@
 odoo.define('shrimp_crab_fish.dashboard', function (require) {
     "use strict";
     const { Component } = owl;
-    const { useRef, onMounted, onWillUnmount } = owl.hooks;
+    const { onMounted, onWillUnmount } = owl.hooks;
     var core = require('web.core');
     var rpc = require('web.rpc');
+    var session = require('web.session');
 
     class SCFDashboard extends Component {
         static template = "shrimp_crab_fish.SCFDashboard";
@@ -11,23 +12,45 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
         setup() {
             onMounted(() => {
-                 rpc.query({
-                    model: 'res.users',
-                    method: 'check_access_right'}).then(result=>{
-                        document.getElementById("access").value = result;
-                 });
+
                 this.balanceRefreshInterval = setInterval(_refreshBalance, 2000);
                 this.countDownRefreshInterval = setInterval(_refreshCountDown, 1000);
-                function _refreshBalance(){
-                    return rpc.query({
-                        model: 'res.users',
-                        method: 'retrive_user_data',
-                    }).then(result =>{
-                        document.getElementById("employee_name").innerHTML = result['name'];
-                        document.getElementById("employee_balance").innerHTML = result['balance'];
+                this.userUid = session.uid;
+                this.tableId = rpc.query({
+                        model: 'scf.table',
+                        method: 'get_scf_table_id',
+                    }).then(result=>this.tableId=result);
 
+                //Mount method
+                function openBow(){
+                    let change = 0;
+                    const imgBow = document.getElementById("bow");
+                    const id = setInterval(()=>{
+                        if(change > 125){
+                            clearInterval(id);}
+                        else {
+                            change += 1;
+                            imgBow.style.left = change + "px";
+                            imgBow.style.top = -change + "px";}
+                    }, 20);}
+
+                function shakeBow() {
+                    const bowRef = document.getElementById("bow");
+                    bowRef.classList.remove("bow-animation");
+                    bowRef.style.left = "0px";
+                    bowRef.style.top = "0px";
+                    void bowRef.offsetWidth;
+                    bowRef.classList.add("bow-animation");
+                    // Restart animation
+                    void bowRef.offsetWidth;
+                    bowRef.classList.add("bow-animation");}
+                function generateResult() {
+                    rpc.query({
+                        model: 'scf.table',
+                        method: 'generate_result',
                     });
                 }
+
                 function _refreshCountDown(){
                     return rpc.query({
                         model: 'scf.table',
@@ -35,9 +58,17 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                     }).then(result =>{
                         let countDownRef = document.getElementById("countdown");
                         countDownRef.value = result["current_time"];
-                        countDownRef.dispatchEvent(new Event('input', { bubbles: true }));
-                    });
-                }
+                        if(result["current_time"] == "10") shakeBow();
+                        if(result["current_time"] == "0") openBow();
+                    });}
+
+                 function _refreshBalance(){
+                    return rpc.query({
+                        model: 'res.users',
+                        method: 'retrive_user_data',
+                    }).then(result =>{
+                        document.getElementById("employee_name").innerHTML = result['name'];
+                        document.getElementById("employee_balance").innerHTML = result['balance'];});}
             });
             onWillUnmount(()=>{
                 clearInterval(this.balanceRefreshInterval);
@@ -85,56 +116,57 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
 
         _onClickBet() {
+            /*
+            0: deer
+            1: gourd
+            2: rooster
+            3: fish
+            4: crab
+            5: shrimp
+            */
            const imgSrc = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
-           [1, 2, 3].forEach(item =>{
-               let result = Math.floor(Math.random() * 6);
-               document.getElementById(`result-${item}`).src = `/shrimp_crab_fish/static/src/image/result_${imgSrc[result]}.png`;
-           });
-           let bowRef = document.getElementById("bow");
-           let betRef = document.getElementById("bet-button");
-           // Remove clickable bow for 2 seconds
-           bowRef.classList.remove("bow-animation");
-           bowRef.classList.add("no-pointer-event");
-           bowRef.style.left = "0px";
-           bowRef.style.top = "0px";
-           // Restart animation
-           void bowRef.offsetWidth;
-           bowRef.classList.add("bow-animation");
-           //Disable button 2 second after click
+           let betLst = {
+               'uid': this.userUid,
+               'bet': {}
+           };
+           for(let index=0; index< imgSrc.length; index++){
+               let bet = parseInt(document.getElementById(imgSrc[index]).value);
+               document.getElementById(imgSrc[index]).value = 0;
+               if(bet==0)continue;
+               betLst['bet'][index] = bet;
+               rpc.query({
+                    model: "scf.bet.line",
+                    method: "create",
+                    args: [{
+                        "user_id": this.userUid,
+                        "bet_result": index,
+                        "bet_amount": bet,
+                        "scf_table_id": this.tableId,
+                    }],
+                });
 
-            betRef.innerHTML = "Betting...";
-            betRef.classList.add("no-pointer-event");
-            setTimeout(()=>{
-               betRef.classList.remove("no-pointer-event");
-               bowRef.classList.remove("no-pointer-event");
-               betRef.innerHTML = "Bet";
-            }, 2000);
+           }
+           // let bowRef = document.getElementById("bow");
+           // let betRef = document.getElementById("bet-button");
+           // // Remove clickable bow for 2 seconds
+           // bowRef.classList.remove("bow-animation");
+           // bowRef.classList.add("no-pointer-event");
+           // bowRef.style.left = "0px";
+           // bowRef.style.top = "0px";
+           // // Restart animation
+           // void bowRef.offsetWidth;
+           // bowRef.classList.add("bow-animation");
+           // //Disable button 2 second after click
+           //
+           //  betRef.innerHTML = "Betting...";
+           //  betRef.classList.add("no-pointer-event");
+           //  setTimeout(()=>{
+           //     betRef.classList.remove("no-pointer-event");
+           //     bowRef.classList.remove("no-pointer-event");
+           //     betRef.innerHTML = "Bet";
+           //  }, 2000);
 
         }
-
-        _onClickBow(){
-            let change = 0;
-            const imgBow = document.getElementById("bow");
-            const betRef = document.getElementById("bet-button");
-            imgBow.classList.add("no-pointer-event");
-            betRef.classList.add("no-pointer-event");
-            const id = setInterval(openBow, 20);
-            function openBow(){
-                if(change > 125){
-                    imgBow.classList.remove("no-pointer-event");
-                    betRef.classList.remove("no-pointer-event");
-                    clearInterval(id);
-                } else {
-                    change += 1;
-                    imgBow.style.left = change + "px";
-                    imgBow.style.top = -change + "px";
-                }
-            }
-            }
-         _onchangeCountDown(){
-            console.log(document.getElementById("countdown").value);
-         }
-
     }
 
     core.action_registry.add('shrimp_crab_fish.shrimp_crab_fish', SCFDashboard);

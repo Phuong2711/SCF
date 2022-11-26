@@ -15,7 +15,6 @@
                 <span>Shrimp Crab Fish</span>
             </div>
             <div class="scf-countdown">
-                <input id="access" type="hidden"/>
                 <input id="countdown" class="no-pointer-event" onChange="_onchangeCountDown()" value="Stop"/>
             </div>
             <div class="plate">
@@ -23,7 +22,7 @@
                 <img id="result-2" t-attf-src="/shrimp_crab_fish/static/src/image/result_gourd.png"/>
                 <img id="result-3" t-attf-src="/shrimp_crab_fish/static/src/image/result_rooster.png"/>
                 <div class="bow">
-                    <img id="bow" t-on-click="_onClickBow" t-attf-src="/shrimp_crab_fish/static/src/image/bow.png" style="border:none;"/>
+                    <img id="bow" t-attf-src="/shrimp_crab_fish/static/src/image/bow.png" style="border:none;"/>
                 </div>
             </div>
             <div class="random">
