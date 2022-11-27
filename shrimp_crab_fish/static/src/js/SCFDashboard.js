@@ -58,7 +58,10 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                     }).then(result =>{
                         let countDownRef = document.getElementById("countdown");
                         countDownRef.value = result["current_time"];
-                        if(result["current_time"] == "10") shakeBow();
+                        if(result["current_time"] == "10"){
+                            shakeBow();
+                            _refreshResultData();
+                        }
                         if(result["current_time"] == "0") openBow();
                     });}
 
@@ -68,7 +71,20 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                         method: 'retrive_user_data',
                     }).then(result =>{
                         document.getElementById("employee_name").innerHTML = result['name'];
-                        document.getElementById("employee_balance").innerHTML = result['balance'];});}
+                        document.getElementById("employee_balance").innerHTML = result['balance'].toLocaleString();});}
+
+                 function _refreshResultData() {
+                    let srcImg = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
+                    return rpc.query({
+                        model: 'scf.table',
+                        method: 'refresh_result_data'
+                    }).then(result=>{
+                        document.getElementById("result-1").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res1']]}.png`;
+                        document.getElementById("result-2").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res2']]}.png`;
+                        document.getElementById("result-3").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res3']]}.png`;
+                    });
+                 }
+
             });
             onWillUnmount(()=>{
                 clearInterval(this.balanceRefreshInterval);

@@ -7,7 +7,7 @@
                 Balance: <span id="employee_balance" t-ref="balance"></span>
             </div>
             <div class="marquee-banner">
-                <marquee width="100%" direction="left" height="100px">
+                <marquee width="100%" direction="left">
                     ERP88 Nha Cai Den Tu Viet Nam.
                 </marquee>
             </div>

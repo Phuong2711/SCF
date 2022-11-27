@@ -9,13 +9,12 @@
         <record id="group_scf_player" model="res.groups">
             <field name="name">Player</field>
             <field name="category_id" ref="shrimp_crab_fish.scf_category"/>
-            <field name="users" eval="[(4, ref('base.default_user'))]"/>
         </record>
 
         <record id="group_scf_manager" model="res.groups">
             <field name="name">Casino Owner</field>
             <field name="category_id" ref="shrimp_crab_fish.scf_category"/>
-            <field name="implied_ids" eval="[(3, ref('shrimp_crab_fish.group_scf_player'))]"/>
+            <field name="implied_ids" eval="[(4, ref('shrimp_crab_fish.group_scf_player'))]"/>
         </record>
 
     </data>

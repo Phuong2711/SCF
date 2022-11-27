@@ -8,12 +8,12 @@
             <field name="target"></field>
         </record>
 
-        <menuitem id="shrimp_crab_fish.shrimp_crab_fish_root" name="Shrimp Crab Fish" web_icon="shrimp_crab_fish,static/description/icon.png" sequence="10">
-            <menuitem id="shrimp_crab_fish.shrimp_crab_fish_dashboard_menuitem" name="Dashboard" action="action_shrimp_crab_fish_dashboard" sequence="0"/>
+        <menuitem id="shrimp_crab_fish.shrimp_crab_fish_root" name="Shrimp Crab Fish" web_icon="shrimp_crab_fish,static/description/icon.png" sequence="10" groups="shrimp_crab_fish.group_scf_player,shrimp_crab_fish.group_scf_manager">
+            <menuitem id="shrimp_crab_fish.shrimp_crab_fish_dashboard_menuitem" name="Dashboard" action="action_shrimp_crab_fish_dashboard" sequence="0" groups="shrimp_crab_fish.group_scf_player,shrimp_crab_fish.group_scf_manager"/>
             <menuitem id="shrimp_crab_fish.shrimp_crab_fish_deposit_withdraw_category" name="Balance">
                 <menuitem id="shrimp_crab_fish.shrimp_crab_fish_account_move_menuitem" name="Account Move" action="scf_account_move_action"/>
             </menuitem>
-            <menuitem id="shrimp_crab_fish.shrimp_crab_fish_configuration_category" name="Configuration">
+            <menuitem id="shrimp_crab_fish.shrimp_crab_fish_configuration_category" name="Configuration" groups="shrimp_crab_fish.group_scf_manager">
                 <menuitem id="shrimp_crab_fish.shrimp_crab_fish_scf_table_menuitem" name="SCF Table" action="scf_table_action"/>
             </menuitem>
         </menuitem>

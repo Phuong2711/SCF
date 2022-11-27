@@ -10,10 +10,13 @@
   border-style: groove;
 }
 
-.scf-app scf-table input {
-  border-radius: 25px;
-  border: 2px solid #5C6576;
-  height: 15px;
+.scf-app .scf-table input {
+  height: 20px;
+  width: 100px;
+}
+.scf-table img{
+  height: 100px;
+  width: 100px;
 }
 
 .scf-bet-button {
@@ -75,7 +78,7 @@
 }
 
 .scf-alert span {
-  font-size: 60px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -85,15 +88,15 @@
 
 .user-infor {
   text-align: right;
-  font-size: 15px;
+  font-size: 10px;
   font-weight: bold;
-  margin-right: 20px;
-  margin-top: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
 }
 
 .plate {
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
   margin-left: auto;
   margin-right: auto;
   display: block;
@@ -103,21 +106,21 @@
 }
 
 .plate>img:first-child {
-  width: 50px;
+  width: 30px;
   position: absolute;
   top: 30%;
   left: 22%;
 }
 
 .plate>img:nth-child(2) {
-  width: 50px;
+  width: 30px;
   position: absolute;
   top: 30%;
   left: 55%;
 }
 
 .plate>img:nth-child(3) {
-  width: 50px;
+  width: 30px;
   position: absolute;
   top: 58%;
   left: 38%;
@@ -131,7 +134,7 @@
 
 .bow>img{
   border: none;
-  width: 246px;
+  width: 150px;
   position:relative;
   cursor: grabbing;
 }

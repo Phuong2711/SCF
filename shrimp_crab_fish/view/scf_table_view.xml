@@ -17,6 +17,9 @@
             <field name="model">scf.table</field>
             <field name="arch" type="xml">
                 <form string="scf_table_form">
+                    <header>
+                        <button name="action_start_game" type="object" string="Start table" class="btn-primary"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="name"/>
