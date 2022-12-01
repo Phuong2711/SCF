@@ -15,12 +15,15 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
                 this.balanceRefreshInterval = setInterval(_refreshBalance, 2000);
                 this.countDownRefreshInterval = setInterval(_refreshCountDown, 1000);
+                this.allBetRefreshInterval = setInterval(_refreshAllBet, 5000);
                 this.userUid = session.uid;
+                this.valuePerClick = 1000;
                 this.tableId = rpc.query({
                         model: 'scf.table',
                         method: 'get_scf_table_id',
                     }).then(result=>this.tableId=result);
 
+                document.getElementById("1k").checked = true;
                 //Mount method
                 function openBow(){
                     let change = 0;
@@ -44,12 +47,6 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                     // Restart animation
                     void bowRef.offsetWidth;
                     bowRef.classList.add("bow-animation");}
-                function generateResult() {
-                    rpc.query({
-                        model: 'scf.table',
-                        method: 'generate_result',
-                    });
-                }
 
                 function _refreshCountDown(){
                     return rpc.query({
@@ -85,36 +82,64 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                     });
                  }
 
-            });
+                 function _refreshAllBet(){
+                    let srcImg = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
+                    return rpc.query({
+                        model: 'scf.table',
+                        method: 'refresh_allbet'
+                    }).then(result=>{
+                        let tbody = document.getElementById("data-output");
+                        let out = "";
+                        for(let line of result){
+                            out += `
+                            <tr>
+                                <td>${line['user_name']}</td>
+                                <td><img src='/shrimp_crab_fish/static/src/image/result_${srcImg[line['bet_result']]}.png'</td>
+                                <td>${line['bet_amount'].toLocaleString()}</td>                            
+                            </tr>
+                            `;
+                        }
+                        tbody.innerHTML = ``;
+                        tbody.innerHTML = out;
+                    });
+                 }
+
+                 document.addEventListener('input',(e)=>{
+                     if(e.target.getAttribute('name')=="mn-options")
+                         this.valuePerClick = parseInt(e.target.value);
+                 })});
+
+
             onWillUnmount(()=>{
                 clearInterval(this.balanceRefreshInterval);
                 clearInterval(this.countDownRefreshInterval);
+                clearInterval(this.allBetRefreshInterval);
             });
         }
 
         _onClickDeer() {
             let deerRef = document.getElementById("deer");
-            deerRef.value = parseInt(deerRef.value) + 1000;
+            deerRef.value = parseInt(deerRef.value) + this.valuePerClick;
         }
         _onClickGourd() {
             let gourdRef = document.getElementById("gourd");
-            gourdRef.value = parseInt(gourdRef.value) + 1000;
+            gourdRef.value = parseInt(gourdRef.value) + this.valuePerClick;
         }
         _onClickRooster() {
             let roosterRef = document.getElementById("rooster");
-            roosterRef.value = parseInt(roosterRef.value) + 1000;
+            roosterRef.value = parseInt(roosterRef.value) + this.valuePerClick;
         }
         _onClickFish() {
             let fishRef = document.getElementById("fish");
-            fishRef.value = parseInt(fishRef.value) + 1000;
+            fishRef.value = parseInt(fishRef.value) + this.valuePerClick;
         }
         _onClickShrimp() {
             let shrimpRef = document.getElementById("shrimp");;
-            shrimpRef.value = parseInt(shrimpRef.value) + 1000;
+            shrimpRef.value = parseInt(shrimpRef.value) + this.valuePerClick;
         }
         _onClickCrab() {
             let crabRef = document.getElementById("crab");
-            crabRef.value = parseInt(crabRef.value) + 1000;
+            crabRef.value = parseInt(crabRef.value) + this.valuePerClick;
         }
 
         _onClickCancel() {
@@ -132,14 +157,6 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
 
         _onClickBet() {
-            /*
-            0: deer
-            1: gourd
-            2: rooster
-            3: fish
-            4: crab
-            5: shrimp
-            */
            const imgSrc = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
            let betLst = {
                'uid': this.userUid,
@@ -162,25 +179,6 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                 });
 
            }
-           // let bowRef = document.getElementById("bow");
-           // let betRef = document.getElementById("bet-button");
-           // // Remove clickable bow for 2 seconds
-           // bowRef.classList.remove("bow-animation");
-           // bowRef.classList.add("no-pointer-event");
-           // bowRef.style.left = "0px";
-           // bowRef.style.top = "0px";
-           // // Restart animation
-           // void bowRef.offsetWidth;
-           // bowRef.classList.add("bow-animation");
-           // //Disable button 2 second after click
-           //
-           //  betRef.innerHTML = "Betting...";
-           //  betRef.classList.add("no-pointer-event");
-           //  setTimeout(()=>{
-           //     betRef.classList.remove("no-pointer-event");
-           //     bowRef.classList.remove("no-pointer-event");
-           //     betRef.innerHTML = "Bet";
-           //  }, 2000);
 
         }
     }

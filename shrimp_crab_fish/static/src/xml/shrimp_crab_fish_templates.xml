@@ -15,7 +15,7 @@
                 <span>Shrimp Crab Fish</span>
             </div>
             <div class="scf-countdown">
-                <input id="countdown" class="no-pointer-event" onChange="_onchangeCountDown()" value="Stop"/>
+                <input id="countdown" class="no-pointer-event" value="Stop"/>
             </div>
             <div class="plate">
                 <img id="result-1" t-attf-src="/shrimp_crab_fish/static/src/image/result_deer.png"/>
@@ -27,6 +27,19 @@
             </div>
             <div class="random">
             </div>
+            <div class="money-options">
+                <input type="radio" id="1k" name="mn-options" value="1000"/>
+                <label for="1k"><img t-attf-src="/shrimp_crab_fish/static/src/image/1kvnd.jpg"/></label>
+                <input type="radio" id="5k" name="mn-options" value="5000"/>
+                <label for="5k"><img t-attf-src="/shrimp_crab_fish/static/src/image/5kvnd.jpg"/></label>
+                <input type="radio" id="50k" name="mn-options" value="50000"/>
+                <label for="50k"><img t-attf-src="/shrimp_crab_fish/static/src/image/50kvnd.jpg"/></label>
+                <input type="radio" id="100k" name="mn-options" value="100000"/>
+                <label for="100k"><img t-attf-src="/shrimp_crab_fish/static/src/image/100kvnd.jpg"/></label>
+                <input type="radio" id="500k" name="mn-options" value="500000"/>
+                <label for="500k"><img t-attf-src="/shrimp_crab_fish/static/src/image/500kvnd.jpg"/></label>
+            </div>
+            <div class="scf-both">
             <div class="scf-table">
                 <table>
                     <tr>
@@ -41,6 +54,20 @@
                     </tr>
                 </table>
             </div>
+            <div class="scf_allbet">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User name</th>
+                            <th>Bet result</th>
+                            <th>Bet amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-output">
+                    </tbody>
+                </table>
+            </div>
+                </div>
             <div class="scf-bet-button">
                 <button id="bet-button" class="bet-button"  t-on-click="_onClickBet">Bet</button>
                 <button id="cancel-button" class="cancel-button" t-on-click="_onClickCancel">Cancel</button>

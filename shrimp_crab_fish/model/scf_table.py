@@ -59,6 +59,14 @@ class ScfTable(models.Model):
         return res
 
     @api.model
+    def refresh_allbet(self):
+        rec = self.env.ref("shrimp_crab_fish.scf_table_1")
+        res = []
+        for line in rec.sudo().scf_bet_line_ids:
+            res.append({'user_name': line.user_id.name, 'bet_result': line.bet_result, 'bet_amount': line.bet_amount})
+        return res
+
+    @api.model
     def get_scf_table_id(self):
         return self.env.ref("shrimp_crab_fish.scf_table_1").id
 
@@ -73,24 +81,31 @@ class ScfTable(models.Model):
     def pay_win(self):
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
         bet_line_ids = rec.scf_bet_line_ids
+
+        result = {rec.result_dice_1, rec.result_dice_2, rec.result_dice_3}
+        for line in bet_line_ids.filtered(lambda l: l.bet_result in result):
+            user = line.sudo().user_id
+            user.write({
+                'scf_balance': user.scf_balance + line.bet_amount
+            })
         # Pay result 1 win
         for line in bet_line_ids.filtered(lambda l: l.bet_result == rec.result_dice_1):
             user = line.sudo().user_id
             user.write({
-                'scf_balance': user.scf_balance + line.bet_amount * 2
+                'scf_balance': user.scf_balance + line.bet_amount
             })
 
         # Pay result 2 win
         for line in bet_line_ids.filtered(lambda l: l.bet_result == rec.result_dice_2):
             user = line.sudo().user_id
             user.write({
-                'scf_balance': user.scf_balance + line.bet_amount * 2
+                'scf_balance': user.scf_balance + line.bet_amount
             })
 
         # Pay result 3 win
         for line in bet_line_ids.filtered(lambda l: l.bet_result == rec.result_dice_3):
             user = line.sudo().user_id
             user.write({
-                'scf_balance': user.scf_balance + line.bet_amount * 2
+                'scf_balance': user.scf_balance + line.bet_amount
             })
 

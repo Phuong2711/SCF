@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
+  width: 80%;
 }
 
 .scf-bet-button .bet-button {
@@ -101,7 +102,7 @@
   margin-right: auto;
   display: block;
   position: relative;
-  background-image: url('/shrimp_crab_fish/static/src/image/plate.png');
+  background-image: url('/shrimp_crab_fish/static/src/image/plate_img.png');
 
 }
 
@@ -202,4 +203,49 @@
   width: 50px;
   height: 50px;
   text-align: center;
+}
+
+.money-options{
+  width: 80%;
+  text-align: center;
+}
+.money-options input{
+  display: none;
+}
+
+.money-options img{
+  padding: 10px 10px 10px 10px;
+  border: none;
+}
+
+.money-options input[type="radio"]:checked + label>img{
+  margin-top:-50px;
+}
+
+.scf_allbet table{
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+.scf_allbet th{
+  border: 1px solid white;
+  border-collapse: collapse;
+  background-color: #96D4D4;
+}
+.scf_allbet td{
+  border: 1px solid white;
+  border-collapse: collapse;
+  background-color: #96D4D4;
+}
+
+.scf-table{
+  width:80%;
+  float:left;
+}
+.scf-allbet{
+  width:20%;
+  float:left;
+}
+
+.scf-bet-button{
+  clear: both;
 }
