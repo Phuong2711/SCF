@@ -173,7 +173,7 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
                     args: [{
                         "user_id": this.userUid,
                         "bet_result": index,
-                        "bet_amount": bet,
+                        "bet_amount": Math.abs(bet),
                         "scf_table_id": this.tableId,
                     }],
                 });

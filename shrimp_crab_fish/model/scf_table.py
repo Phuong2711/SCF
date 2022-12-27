@@ -37,7 +37,9 @@ class ScfTable(models.Model):
         rec._countdown()
 
     def action_start_game(self):
-        return self.env.ref("shrimp_crab_fish.scf_table_1")._countdown()
+        rec = self.env.ref("shrimp_crab_fish.scf_table_1")
+        rec.scf_bet_line_ids = False
+        return rec._countdown()
 
 
     @api.model
