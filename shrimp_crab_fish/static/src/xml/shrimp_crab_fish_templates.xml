@@ -3,8 +3,8 @@
     <t t-name="shrimp_crab_fish.SCFDashboard" owl="1">
         <div class="scf-app">
             <div class="user-infor">
-                <span id="employee_name" t-ref="name"></span><br/>
-                Balance: <span id="employee_balance" t-ref="balance"></span>
+                <span id="employee_name" t-esc="state.employeeName"></span><br/>
+                Balance: <span id="employee_balance" t-esc="state.balance.toLocaleString()"></span>
             </div>
             <div class="marquee-banner">
                 <marquee width="100%" direction="left">
@@ -28,29 +28,29 @@
             <div class="random">
             </div>
             <div class="money-options">
-                <input type="radio" id="1k" name="mn-options" value="1000"/>
+                <input type="radio" id="1k" name="mn-options" value="1000" t-model="state.valuePerClick"/>
                 <label for="1k"><img t-attf-src="/shrimp_crab_fish/static/src/image/1kvnd.jpg"/></label>
-                <input type="radio" id="5k" name="mn-options" value="5000"/>
+                <input type="radio" id="5k" name="mn-options" value="5000" t-model="state.valuePerClick"/>
                 <label for="5k"><img t-attf-src="/shrimp_crab_fish/static/src/image/5kvnd.jpg"/></label>
-                <input type="radio" id="50k" name="mn-options" value="50000"/>
+                <input type="radio" id="50k" name="mn-options" value="50000" t-model="state.valuePerClick"/>
                 <label for="50k"><img t-attf-src="/shrimp_crab_fish/static/src/image/50kvnd.jpg"/></label>
-                <input type="radio" id="100k" name="mn-options" value="100000"/>
+                <input type="radio" id="100k" name="mn-options" value="100000" t-model="state.valuePerClick"/>
                 <label for="100k"><img t-attf-src="/shrimp_crab_fish/static/src/image/100kvnd.jpg"/></label>
-                <input type="radio" id="500k" name="mn-options" value="500000"/>
+                <input type="radio" id="500k" name="mn-options" value="500000" t-model="state.valuePerClick"/>
                 <label for="500k"><img t-attf-src="/shrimp_crab_fish/static/src/image/500kvnd.jpg"/></label>
             </div>
             <div class="scf-both">
             <div class="scf-table">
-                <table>
+                <table style="text-align:center;">
                     <tr>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/deer.png" t-on-click="_onClickDeer"/><input id="deer" class="no-pointer-event" type="number" t-ref="deer-bet" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/gourd.png" t-on-click="_onClickGourd"/><input id="gourd" class="no-pointer-event" type="number" t-ref="gourd-bet" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/rooster.png" t-on-click="_onClickRooster"/><input id="rooster" class="no-pointer-event" type="number" t-ref="rooster-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/deer.png" t-on-click="_onClickDeer"/><br/><t t-esc="state.bet.deerBet.toLocaleString()"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/gourd.png" t-on-click="_onClickGourd"/><br/><t t-esc="state.bet.gourdBet.toLocaleString()"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/rooster.png" t-on-click="_onClickRooster"/><br/><t t-esc="state.bet.roosterBet.toLocaleString()"/></td>
                     </tr>
                     <tr>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/fish.png" t-on-click="_onClickFish"/><input id="fish" class="no-pointer-event" type="number" t-ref="fish-bet" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/crab.png" t-on-click="_onClickCrab"/><input id="crab" class="no-pointer-event" type="number" t-ref="crab-bet" value="0"/></td>
-                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/shrimp.png" t-on-click="_onClickShrimp"/><input id="shrimp" class="no-pointer-event" type="number" t-ref="shrimp-bet" value="0"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/fish.png" t-on-click="_onClickFish"/><br/><t t-esc="state.bet.fishBet.toLocaleString()"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/crab.png" t-on-click="_onClickCrab"/><br/><t t-esc="state.bet.crabBet.toLocaleString()"/></td>
+                        <td><img t-attf-src="/shrimp_crab_fish/static/src/image/shrimp.png" t-on-click="_onClickShrimp"/><br/><t t-esc="state.bet.shrimpBet.toLocaleString()"/></td>
                     </tr>
                 </table>
             </div>
