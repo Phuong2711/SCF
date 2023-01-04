@@ -15,7 +15,7 @@
                 <span>Shrimp Crab Fish</span>
             </div>
             <div class="scf-countdown">
-                <input id="countdown" class="no-pointer-event" value="Stop"/>
+                <span id="countdown" class="no-pointer-event" t-esc="state.currentTime"/>
             </div>
             <div class="plate">
                 <img id="result-1" t-attf-src="/shrimp_crab_fish/static/src/image/result_deer.png"/>
@@ -64,6 +64,11 @@
                         </tr>
                     </thead>
                     <tbody id="data-output">
+                        <t t-foreach="this.state.allBet" t-as="line">
+                            <tr>
+                                <td><t t-esc="line"/></td>
+                            </tr>
+                        </t>
                     </tbody>
                 </table>
             </div>

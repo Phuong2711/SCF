@@ -44,11 +44,10 @@ class ScfTable(models.Model):
 
     @api.model
     def refresh_table_data(self):
-        res = {}
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
-        res['current_time'] = rec.current_time
+        res = rec.current_time
         if rec.current_time == -1:
-            res['current_time'] = "Stop"
+            res = "Stop"
         return res
 
     @api.model
@@ -61,7 +60,7 @@ class ScfTable(models.Model):
         return res
 
     @api.model
-    def refresh_allbet(self):
+    def refresh_all_bet(self):
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
         res = []
         for line in rec.sudo().scf_bet_line_ids:
