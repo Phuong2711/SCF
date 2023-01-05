@@ -10,13 +10,5 @@ class ResUsers(models.Model):
     scf_balance = fields.Integer(string="Balance")
 
     @api.model
-    def retrive_user_data(self):
-        res = {}
-        user = self.sudo().env.user
-        res['name'] = user.name
-        res['balance'] = user.scf_balance
-        return res
-
-    @api.model
-    def check_access_right(self):
-        return self.env.user.has_group("shrimp_crab_fish.group_scf_manager")
+    def retrive_balance(self):
+        return self.sudo().env.user.scf_balance

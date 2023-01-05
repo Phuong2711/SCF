@@ -1,7 +1,7 @@
 odoo.define('shrimp_crab_fish.dashboard', function (require) {
     "use strict";
-    const { Component } = owl;
-    const { onMounted, onWillUnmount } = owl.hooks;
+    const { Component, useState } = owl;
+    const { onWillUnmount } = owl.hooks;
     var core = require('web.core');
     var rpc = require('web.rpc');
     var session = require('web.session');
@@ -11,176 +11,151 @@ odoo.define('shrimp_crab_fish.dashboard', function (require) {
 
 
         setup() {
-            onMounted(() => {
-
-                this.balanceRefreshInterval = setInterval(_refreshBalance, 2000);
-                this.countDownRefreshInterval = setInterval(_refreshCountDown, 1000);
-                this.allBetRefreshInterval = setInterval(_refreshAllBet, 5000);
-                this.userUid = session.uid;
-                this.valuePerClick = 1000;
-                this.tableId = rpc.query({
-                        model: 'scf.table',
-                        method: 'get_scf_table_id',
-                    }).then(result=>this.tableId=result);
-
-                document.getElementById("1k").checked = true;
-                //Mount method
-                function openBow(){
-                    let change = 0;
-                    const imgBow = document.getElementById("bow");
-                    const id = setInterval(()=>{
-                        if(change > 125){
-                            clearInterval(id);}
-                        else {
-                            change += 1;
-                            imgBow.style.left = change + "px";
-                            imgBow.style.top = -change + "px";}
-                    }, 20);}
-
-                function shakeBow() {
-                    const bowRef = document.getElementById("bow");
-                    bowRef.classList.remove("bow-animation");
-                    bowRef.style.left = "0px";
-                    bowRef.style.top = "0px";
-                    void bowRef.offsetWidth;
-                    bowRef.classList.add("bow-animation");
-                    // Restart animation
-                    void bowRef.offsetWidth;
-                    bowRef.classList.add("bow-animation");}
-
-                function _refreshCountDown(){
-                    return rpc.query({
-                        model: 'scf.table',
-                        method: 'refresh_table_data',
-                    }).then(result =>{
-                        let countDownRef = document.getElementById("countdown");
-                        countDownRef.value = result["current_time"];
-                        if(result["current_time"] == "10"){
-                            shakeBow();
-                            _refreshResultData();
-                        }
-                        if(result["current_time"] == "0") openBow();
-                    });}
-
-                 function _refreshBalance(){
-                    return rpc.query({
-                        model: 'res.users',
-                        method: 'retrive_user_data',
-                    }).then(result =>{
-                        document.getElementById("employee_name").innerHTML = result['name'];
-                        document.getElementById("employee_balance").innerHTML = result['balance'].toLocaleString();});}
-
-                 function _refreshResultData() {
-                    let srcImg = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
-                    return rpc.query({
-                        model: 'scf.table',
-                        method: 'refresh_result_data'
-                    }).then(result=>{
-                        document.getElementById("result-1").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res1']]}.png`;
-                        document.getElementById("result-2").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res2']]}.png`;
-                        document.getElementById("result-3").src = `/shrimp_crab_fish/static/src/image/result_${srcImg[result['res3']]}.png`;
-                    });
-                 }
-
-                 function _refreshAllBet(){
-                    let srcImg = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
-                    return rpc.query({
-                        model: 'scf.table',
-                        method: 'refresh_allbet'
-                    }).then(result=>{
-                        let tbody = document.getElementById("data-output");
-                        let out = "";
-                        for(let line of result){
-                            out += `
-                            <tr>
-                                <td>${line['user_name']}</td>
-                                <td><img src='/shrimp_crab_fish/static/src/image/result_${srcImg[line['bet_result']]}.png'</td>
-                                <td>${line['bet_amount'].toLocaleString()}</td>                            
-                            </tr>
-                            `;
-                        }
-                        tbody.innerHTML = ``;
-                        tbody.innerHTML = out;
-                    });
-                 }
-
-                 document.addEventListener('input',(e)=>{
-                     if(e.target.getAttribute('name')=="mn-options")
-                         this.valuePerClick = parseInt(e.target.value);
-                 })});
-
-
-            onWillUnmount(()=>{
-                clearInterval(this.balanceRefreshInterval);
-                clearInterval(this.countDownRefreshInterval);
-                clearInterval(this.allBetRefreshInterval);
+            this.state = useState({
+                tableId: 0,
+                employeeName : session.name,
+                balance: 0,
+                userUid: session.uid,
+                valuePerClick: 1000,
+                currentTime: 0,
+                bet: {
+                    deerBet: 0,
+                    gourdBet: 0,
+                    roosterBet: 0,
+                    fishBet: 0,
+                    crabBet: 0,
+                    shrimpBet: 0
+                },
+                result: {
+                    result1: 0,
+                    result2: 0,
+                    result3: 0
+                },
+                allBet: []
             });
+            this.getTableId()
+            this.getResult()
+            this.refreshBalanceInterval = setInterval(this.getUserBalance.bind(this), 5000);
+            this.refreshCurrentTimeInterval = setInterval(this.getCurrentTableTime.bind(this), 1000);
+            this.refreshAllBetInterval = setInterval(this.getAllBet.bind(this), 5000),
+
+            onWillUnmount(()=> {
+                clearInterval(this.refreshBalanceInterval);
+                clearInterval(this.refreshCurrentTimeInterval);
+                clearInterval(this.refreshAllBetInterval);
+            });
+        }
+        getUserBalance() {
+            rpc.query({
+                model: 'res.users',
+                method: 'retrive_balance'
+            }).then(res=>this.state.balance = res);
+        }
+        getCurrentTableTime() {
+            rpc.query({
+                model: 'scf.table',
+                method: 'refresh_table_data'
+            }).then(result=> this.state.currentTime = result);
+            if (this.state.currentTime == 9) {
+                this.shakeBow();
+                this.getResult();
+            }
+            if (this.state.currentTime == 1) this.openBow();
+        }
+        getResult() {
+            rpc.query({
+                model: 'scf.table',
+                method: 'refresh_result_data'
+            }).then(result=>{
+                this.state.result.result1 = result['res1'];
+                this.state.result.result2 = result['res2'];
+                this.state.result.result3 = result['res3'];
+            })
+        }
+        getTableId() {
+            rpc.query({
+                model: 'scf.table',
+                method: 'get_scf_table_id'
+            }).then(result=> this.state.tableId = result);
+        }
+        getAllBet() {
+            return rpc.query({
+                model: "scf.table",
+                method: "refresh_all_bet",
+            }).then(result => this.state.allBet = result);
         }
 
         _onClickDeer() {
-            let deerRef = document.getElementById("deer");
-            deerRef.value = parseInt(deerRef.value) + this.valuePerClick;
+            this.state.bet.deerBet += parseInt(this.state.valuePerClick);
         }
         _onClickGourd() {
-            let gourdRef = document.getElementById("gourd");
-            gourdRef.value = parseInt(gourdRef.value) + this.valuePerClick;
+            this.state.bet.gourdBet += parseInt(this.state.valuePerClick);
         }
         _onClickRooster() {
-            let roosterRef = document.getElementById("rooster");
-            roosterRef.value = parseInt(roosterRef.value) + this.valuePerClick;
+            this.state.bet.roosterBet += parseInt(this.state.valuePerClick);
         }
         _onClickFish() {
-            let fishRef = document.getElementById("fish");
-            fishRef.value = parseInt(fishRef.value) + this.valuePerClick;
+            this.state.bet.fishBet += parseInt(this.state.valuePerClick);
         }
         _onClickShrimp() {
-            let shrimpRef = document.getElementById("shrimp");;
-            shrimpRef.value = parseInt(shrimpRef.value) + this.valuePerClick;
+            this.state.bet.shrimpBet += parseInt(this.state.valuePerClick);
         }
         _onClickCrab() {
-            let crabRef = document.getElementById("crab");
-            crabRef.value = parseInt(crabRef.value) + this.valuePerClick;
+            this.state.bet.crabBet += parseInt(this.state.valuePerClick);
         }
 
         _onClickCancel() {
-            const betInput = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
-            betInput.forEach(item => { document.getElementById(item).value = 0; });
-            let cancelRef = document.getElementById("cancel-button");
-            cancelRef.innerHTML = "Canceling...";
-            cancelRef.disabled = true;
-            setTimeout(()=>{
-               cancelRef.disabled = false;
-               cancelRef.innerHTML = "Cancel";
-            }, 1000);
+            this.clearBet()
         }
-
-
-
         _onClickBet() {
-           const imgSrc = ['deer', 'gourd', 'rooster', 'fish', 'crab', 'shrimp'];
-           let betLst = {
-               'uid': this.userUid,
-               'bet': {}
-           };
-           for(let index=0; index< imgSrc.length; index++){
-               let bet = parseInt(document.getElementById(imgSrc[index]).value);
-               document.getElementById(imgSrc[index]).value = 0;
-               if(bet==0)continue;
-               betLst['bet'][index] = bet;
-               rpc.query({
+            let i = 0;
+            let betLst = this.state.bet;
+            for(let item in betLst) {
+                if(betLst[item] == 0) {
+                    i++;
+                    continue}
+
+                rpc.query({
                     model: "scf.bet.line",
                     method: "create",
                     args: [{
-                        "user_id": this.userUid,
-                        "bet_result": index,
-                        "bet_amount": Math.abs(bet),
-                        "scf_table_id": this.tableId,
-                    }],
+                        "user_id": this.state.userUid,
+                        "bet_result": i,
+                        "bet_amount": betLst[item],
+                        "scf_table_id": this.state.tableId, }],
                 });
-
-           }
+                i++;
+            }
+            this.clearBet()
 
         }
+        clearBet() {
+            let bet = this.state.bet;
+            for(let item in bet)bet[item] = 0;
+        }
+
+        // Animation function
+        shakeBow() {
+            const bowRef = document.getElementById("bow");
+            bowRef.classList.remove("bow-animation");
+            bowRef.style.left = "0px";
+            bowRef.style.top = "0px";
+            void bowRef.offsetWidth;
+            bowRef.classList.add("bow-animation");
+            // Restart animation
+            void bowRef.offsetWidth;
+            bowRef.classList.add("bow-animation");}
+         openBow() {
+            let change = 0;
+            const imgBow = document.getElementById("bow");
+            const id = setInterval(()=>{
+                if(change > 125){
+                    clearInterval(id);}
+                else {
+                    change += 1;
+                    imgBow.style.left = change + "px";
+                    imgBow.style.top = -change + "px";}
+            }, 20);}
     }
 
     core.action_registry.add('shrimp_crab_fish.shrimp_crab_fish', SCFDashboard);

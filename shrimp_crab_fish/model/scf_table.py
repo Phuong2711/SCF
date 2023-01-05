@@ -21,7 +21,7 @@ class ScfTable(models.Model):
         rec.current_time = rec.time_per_round
         rec.state = 'open'
         self._cr.commit()
-        while rec.current_time > -1 :
+        while rec.current_time > 0 :
             time.sleep(1)
             rec.current_time = rec.current_time - 1
             if rec.current_time == 10:
@@ -44,11 +44,8 @@ class ScfTable(models.Model):
 
     @api.model
     def refresh_table_data(self):
-        res = {}
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
-        res['current_time'] = rec.current_time
-        if rec.current_time == -1:
-            res['current_time'] = "Stop"
+        res = rec.current_time
         return res
 
     @api.model
@@ -61,7 +58,7 @@ class ScfTable(models.Model):
         return res
 
     @api.model
-    def refresh_allbet(self):
+    def refresh_all_bet(self):
         rec = self.env.ref("shrimp_crab_fish.scf_table_1")
         res = []
         for line in rec.sudo().scf_bet_line_ids:
